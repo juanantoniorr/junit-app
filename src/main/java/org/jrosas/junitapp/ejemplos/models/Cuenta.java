@@ -13,6 +13,21 @@ public class Cuenta {
 		this.saldo = saldo;
 	}
 	
+	public void credito(BigDecimal monto) {
+		//Esto falla porque bigdecimal es inmutable, no se puede cambiar
+		//this.saldo.subtract(monto);
+		this.saldo = this.saldo.add(monto);
+		
+		
+		
+	}
+	public void debito(BigDecimal monto) {
+		//Esto falla porque bigdecimal es inmutable, no se puede cambiar
+		//this.saldo.add(monto);
+		
+		this.saldo = this.saldo.subtract(monto);
+	}
+	
 	
 	
 	public String getPersona() {

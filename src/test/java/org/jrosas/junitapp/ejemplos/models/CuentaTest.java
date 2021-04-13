@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class CuentaTest {
@@ -31,6 +30,25 @@ class CuentaTest {
 		Cuenta cuenta2 = new Cuenta("John", new BigDecimal("1000.50"));
 		//Pasa porque sobreescribi el metodo equals y compare por valor
 		assertEquals(cuenta, cuenta2);
+	}
+	//Restar 20
+	@Test
+	void testDebitoCuenta() {
+		Cuenta cuenta = new Cuenta("Juan", new BigDecimal("123.456") );
+		cuenta.debito(new BigDecimal(20));
+		assertNotNull(cuenta.getSaldo());
+		assertEquals(103, cuenta.getSaldo().intValue());
+		
+	}
+	
+	//Sumar 20
+	@Test
+	void testCreditoCuenta() {
+		Cuenta cuenta = new Cuenta("Juan", new BigDecimal("123.456") );
+		cuenta.credito(new BigDecimal(20));
+		assertNotNull(cuenta.getSaldo());
+		assertEquals(143, cuenta.getSaldo().intValue());
+		
 	}
 
 }
