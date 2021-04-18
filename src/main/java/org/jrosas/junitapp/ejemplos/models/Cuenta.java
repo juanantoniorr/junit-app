@@ -2,6 +2,8 @@ package org.jrosas.junitapp.ejemplos.models;
 
 import java.math.BigDecimal;
 
+import org.jrosas.junitapp.ejemplos.exceptions.DineroInsuficienteException;
+
 public class Cuenta {
 	
 	private String persona;
@@ -25,7 +27,11 @@ public class Cuenta {
 		//Esto falla porque bigdecimal es inmutable, no se puede cambiar
 		//this.saldo.add(monto);
 		
-		this.saldo = this.saldo.subtract(monto);
+		BigDecimal nuevoSaldo = this.saldo.subtract(monto);
+		if (nuevoSaldo.compareTo(BigDecimal.ZERO) < 0) {
+			throw new DineroInsuficienteException("Dinero Insuficiente");
+		}
+		this.saldo =  nuevoSaldo;
 	}
 	
 	

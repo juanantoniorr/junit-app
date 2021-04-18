@@ -1,9 +1,9 @@
 package org.jrosas.junitapp.ejemplos.models;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.math.BigDecimal;
 
+import org.jrosas.junitapp.ejemplos.exceptions.DineroInsuficienteException;
 import org.junit.jupiter.api.Test;
 
 class CuentaTest {
@@ -31,24 +31,19 @@ class CuentaTest {
 		//Pasa porque sobreescribi el metodo equals y compare por valor
 		assertEquals(cuenta, cuenta2);
 	}
-	//Restar 20
+	
 	@Test
-	void testDebitoCuenta() {
-		Cuenta cuenta = new Cuenta("Juan", new BigDecimal("123.456") );
-		cuenta.debito(new BigDecimal(20));
-		assertNotNull(cuenta.getSaldo());
-		assertEquals(103, cuenta.getSaldo().intValue());
+	void testDineroInsuficienteException() {
+		Cuenta cuenta = new Cuenta("John", new BigDecimal("1000.50"));
 		
+		Exception ex = assertThrows(DineroInsuficienteException.class, () -> {
+			cuenta.debito(new BigDecimal(1500));
+			
+			
+		});
+		String actual = ex.getMessage();
+		String esperado = "Dinero Insuficiente";
+		assertEquals(esperado, actual);
 	}
 	
-	//Sumar 20
-	@Test
-	void testCreditoCuenta() {
-		Cuenta cuenta = new Cuenta("Juan", new BigDecimal("123.456") );
-		cuenta.credito(new BigDecimal(20));
-		assertNotNull(cuenta.getSaldo());
-		assertEquals(143, cuenta.getSaldo().intValue());
-		
-	}
-
 }
