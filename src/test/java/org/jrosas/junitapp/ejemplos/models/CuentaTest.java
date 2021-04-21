@@ -46,4 +46,38 @@ class CuentaTest {
 		assertEquals(esperado, actual);
 	}
 	
+	@Test
+	void testTransferir() {
+		Cuenta cuenta1 = new Cuenta("John", new BigDecimal("10000"));
+		Cuenta cuenta2 = new Cuenta("Saul", new BigDecimal("1000"));
+		Banco banco = new Banco();
+		banco.setNombre("Bancomer");
+		banco.transferir(cuenta1, cuenta2, new BigDecimal(500));
+		assertEquals("9500", cuenta1.getSaldo().toPlainString());
+		assertEquals("1500", cuenta2.getSaldo().toPlainString());
+		
+	}
+	
+	@Test
+	void testRelacionBancoCuentas() {
+		Cuenta cuenta1 = new Cuenta("John", new BigDecimal("10000"));
+		Cuenta cuenta2 = new Cuenta("Saul", new BigDecimal("1000"));
+		Banco banco = new Banco();
+		banco.addCuenta(cuenta1);
+		banco.addCuenta(cuenta2);
+		
+		banco.setNombre("Bancomer");
+		banco.transferir(cuenta1, cuenta2, new BigDecimal(500));
+		assertEquals("9500", cuenta1.getSaldo().toPlainString());
+		assertEquals("1500", cuenta2.getSaldo().toPlainString());
+		assertEquals(2, banco.getCuentas().size());
+		//Tenemos relacion bidireccional 
+		assertEquals("Bancomer", cuenta1.getBanco().getNombre());
+		//find first operacion final, get obtiene el elemento.
+		//Metodo que busca si el nombre esta en el registro del banco
+		assertEquals("Saul", banco.getCuentas().stream()
+				.filter((p) -> p.getPersona().equals("Saul")).
+				findFirst().get().getPersona());
+	}
+	
 }

@@ -8,6 +8,8 @@ public class Cuenta {
 	
 	private String persona;
 	private BigDecimal saldo;
+	private Banco banco;
+	
 	
 	
 	public Cuenta (String persona, BigDecimal saldo) {
@@ -15,6 +17,7 @@ public class Cuenta {
 		this.saldo = saldo;
 	}
 	
+	//Agrega dinero
 	public void credito(BigDecimal monto) {
 		//Esto falla porque bigdecimal es inmutable, no se puede cambiar
 		//this.saldo.subtract(monto);
@@ -23,6 +26,7 @@ public class Cuenta {
 		
 		
 	}
+	//Resta dinero
 	public void debito(BigDecimal monto) {
 		//Esto falla porque bigdecimal es inmutable, no se puede cambiar
 		//this.saldo.add(monto);
@@ -64,6 +68,15 @@ public class Cuenta {
 		
 		return this.persona.equals(c.getPersona()) && this.saldo.equals(c.getSaldo());
 	}
+	
+	public Banco getBanco() {
+		return banco;
+	}
+
+	public void setBanco(Banco banco) {
+		this.banco = banco;
+	}
+
 	
 
 }
