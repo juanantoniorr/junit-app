@@ -4,11 +4,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.math.BigDecimal;
 
 import org.jrosas.junitapp.ejemplos.exceptions.DineroInsuficienteException;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class CuentaTest {
 
 	@Test
+	@DisplayName("Probando nombre cuenta")
+	@Disabled
 	void testNombreCuenta() {
 		Cuenta cuenta = new Cuenta("Juan", new BigDecimal("123.456"));
 		String esperado = "Juan";
@@ -18,6 +22,7 @@ class CuentaTest {
 	}
 
 	@Test
+	@DisplayName("Probando saldo cuenta")
 	void testSaldoCuenta() {
 		Cuenta cuenta = new Cuenta("Juan", new BigDecimal("-5"));
 		assertEquals(-5, cuenta.getSaldo().doubleValue());
