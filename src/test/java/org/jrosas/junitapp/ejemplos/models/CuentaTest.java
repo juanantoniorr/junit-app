@@ -19,9 +19,11 @@ class CuentaTest {
 
 	@Test
 	void testSaldoCuenta() {
-		Cuenta cuenta = new Cuenta("Juan", new BigDecimal("123.456"));
-		assertEquals(123.456, cuenta.getSaldo().doubleValue());
-		assertFalse(cuenta.getSaldo().compareTo(BigDecimal.ZERO) < 0);
+		Cuenta cuenta = new Cuenta("Juan", new BigDecimal("-5"));
+		assertEquals(-5, cuenta.getSaldo().doubleValue());
+		//Al pasarle una expresion lambda se optimiza la memoria ya que solo construye
+		//el string si falla.
+		assertFalse(cuenta.getSaldo().compareTo(BigDecimal.ZERO) < 0,() -> "La cuenta no tiene fondos");
 	}
 
 	@Test
