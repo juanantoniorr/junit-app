@@ -2,11 +2,19 @@ package org.jrosas.junitapp.ejemplos.models;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.math.BigDecimal;
+import java.util.Map;
+import java.util.Properties;
 
 import org.jrosas.junitapp.ejemplos.exceptions.DineroInsuficienteException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledForJreRange;
+import org.junit.jupiter.api.condition.EnabledOnJre;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.JRE;
+import org.junit.jupiter.api.condition.OS;
 
 class CuentaTest {
 
@@ -88,9 +96,48 @@ class CuentaTest {
 					assertEquals("Saul", banco.getCuentas().stream().filter((p) -> p.getPersona().equals("Saul"))
 							.findFirst().get().getPersona());
 				});
+		
 
 		
 
 	}
+	@Test
+	@EnabledOnOs(OS.WINDOWS)
+	void testWindows() {
+		
+	}
+	@Test
+	@EnabledOnOs(OS.LINUX)
+	void testLinux() {
+		
+	}
+	
+	@Test
+	@DisabledOnOs(OS.WINDOWS)
+	void noWindows() {
+		
+	}
+	@Test
+	@EnabledOnJre(JRE.JAVA_8)
+	void onlyJdk8 () {
+		
+	}
+	@Test
+	@EnabledForJreRange(max = JRE.JAVA_10)
+	void onlyJdk8Onward () {
+		
+	}
+	@Test
+	void printProperties () {
+		Properties prop = System.getProperties();
+		prop.forEach((k,v)-> System.out.println("key: " + k + " value:" + v ));
+	}
+	 
+	@Test
+	void printEnvVariables () {
+		Map<String,String> prop = System.getenv();
+		prop.forEach((k,v)-> System.out.println("variable: " + k + " value:" + v ));
+	}
+	
 
 }
