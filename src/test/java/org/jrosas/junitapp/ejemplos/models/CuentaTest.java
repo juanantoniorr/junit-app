@@ -1,6 +1,7 @@
 package org.jrosas.junitapp.ejemplos.models;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Properties;
@@ -8,6 +9,7 @@ import java.util.Properties;
 import org.jrosas.junitapp.ejemplos.exceptions.DineroInsuficienteException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledForJreRange;
@@ -101,32 +103,45 @@ class CuentaTest {
 		
 
 	}
-	@Test
-	@EnabledOnOs(OS.WINDOWS)
-	void testWindows() {
+	
+	@Nested
+	@DisplayName("Probando atributos sistema operativo")
+	class SistemaOperativoTest{
+		@Test
+		@EnabledOnOs(OS.WINDOWS)
+		void testWindows() {
+			
+		}
+		@Test
+		@EnabledOnOs(OS.LINUX)
+		void testLinux() {
+			
+		}
 		
-	}
-	@Test
-	@EnabledOnOs(OS.LINUX)
-	void testLinux() {
+		@Test
+		@DisabledOnOs(OS.WINDOWS)
+		void noWindows() {
+			
+		}
 		
 	}
 	
-	@Test
-	@DisabledOnOs(OS.WINDOWS)
-	void noWindows() {
+	@Nested
+	class JRETest{
+		@Test
+		@EnabledOnJre(JRE.JAVA_8)
+		void onlyJdk8 () {
+			
+		}
+		@Test
+		@EnabledForJreRange(max = JRE.JAVA_10)
+		void onlyJdk8Onward () {
+			
+		}
 		
 	}
-	@Test
-	@EnabledOnJre(JRE.JAVA_8)
-	void onlyJdk8 () {
-		
-	}
-	@Test
-	@EnabledForJreRange(max = JRE.JAVA_10)
-	void onlyJdk8Onward () {
-		
-	}
+	
+	
 	@Test
 	void printProperties () {
 		Properties prop = System.getProperties();
@@ -137,6 +152,24 @@ class CuentaTest {
 	void printEnvVariables () {
 		Map<String,String> prop = System.getenv();
 		prop.forEach((k,v)-> System.out.println("variable: " + k + " value:" + v ));
+	}
+	
+	@Test
+	@DisplayName("Probando saldo cuenta")
+	void testSaldoCuentaDev() {
+		boolean esDev = "dev".equals(System.getProperty("ENV"));
+		//Asumiendo que es dev se ejecuta todo el codigo
+		assumingThat(esDev, ()-> {
+			Cuenta cuenta = new Cuenta("Juan", new BigDecimal("-5"));
+			assertEquals(-5, cuenta.getSaldo().doubleValue());
+			//Al pasarle una expresion lambda se optimiza la memoria ya que solo construye
+			//el string si falla.
+			assertFalse(cuenta.getSaldo().compareTo(BigDecimal.ZERO) < 0,() -> "La cuenta no tiene fondos");
+			
+		});
+		//Si es false la prueba no se ejecuta
+		//assumeTrue(esDev);
+		
 	}
 	
 
