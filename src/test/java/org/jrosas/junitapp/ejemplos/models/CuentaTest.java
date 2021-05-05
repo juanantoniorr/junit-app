@@ -10,6 +10,7 @@ import org.jrosas.junitapp.ejemplos.exceptions.DineroInsuficienteException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledForJreRange;
@@ -169,6 +170,11 @@ class CuentaTest {
 		});
 		//Si es false la prueba no se ejecuta
 		//assumeTrue(esDev);
+		
+	}
+	@RepeatedTest(value = 5,name = "Probando repeticiones")
+	@EnabledOnOs(OS.WINDOWS)
+	void testWindowsRepeated() {
 		
 	}
 	
