@@ -18,6 +18,8 @@ import org.junit.jupiter.api.condition.EnabledOnJre;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class CuentaTest {
 
@@ -176,6 +178,20 @@ class CuentaTest {
 	@EnabledOnOs(OS.WINDOWS)
 	void testWindowsRepeated() {
 		
+	}
+	
+	
+	@Test
+	@ParameterizedTest
+	@ValueSource(strings = {"2000","3000","40000"})
+	void testTransferirParameterized(String monto) {
+		Cuenta cuenta1 = new Cuenta("John", new BigDecimal("10000"));
+		Cuenta cuenta2 = new Cuenta("Saul", new BigDecimal("5000"));
+		Banco banco = new Banco();
+		banco.setNombre("Bancomer");
+		banco.transferir(cuenta1, cuenta2, new BigDecimal(monto));
+		assertTrue(cuenta2.getSaldo().compareTo(BigDecimal.ZERO)< 0 );
+
 	}
 	
 
