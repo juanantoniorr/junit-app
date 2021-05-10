@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledForJreRange;
@@ -58,6 +59,8 @@ class CuentaTest {
 	}
 
 	@Test
+	@Tag("cuenta")
+	@Tag("errores")
 	void testDineroInsuficienteException() {
 		Cuenta cuenta = new Cuenta("John", new BigDecimal("1000.50"));
 
@@ -134,6 +137,7 @@ class CuentaTest {
 		
 	}
 	
+	@Tag("java")
 	@Nested
 	class JRETest{
 		@Test
@@ -198,9 +202,11 @@ class CuentaTest {
 
 	}
 	
+	@Test
 	@ParameterizedTest
-	@CsvSource({"1,2000","2,3000","3,40000"})
-	void testTransferirParameterizedCsv(String index ,String monto) {
+	@CsvSource({"1,200, Juan", "2.300, Carlos"})
+	void testTransferirParameterizedCsv(String monto, String saldo, String nombre) {
+		System.out.println("Nombre " + nombre + " Monto " + monto + "Saldo " + saldo);
 		Cuenta cuenta1 = new Cuenta("John", new BigDecimal("10000"));
 		Cuenta cuenta2 = new Cuenta("Saul", new BigDecimal("5000"));
 		Banco banco = new Banco();
