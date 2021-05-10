@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledForJreRange;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class CuentaTest {
@@ -53,6 +55,8 @@ class CuentaTest {
 	}
 
 	@Test
+	@Tag("cuenta")
+	@Tag("errores")
 	void testDineroInsuficienteException() {
 		Cuenta cuenta = new Cuenta("John", new BigDecimal("1000.50"));
 
@@ -129,6 +133,7 @@ class CuentaTest {
 		
 	}
 	
+	@Tag("java")
 	@Nested
 	class JRETest{
 		@Test
@@ -185,6 +190,20 @@ class CuentaTest {
 	@ParameterizedTest
 	@ValueSource(strings = {"2000","3000","40000"})
 	void testTransferirParameterized(String monto) {
+		Cuenta cuenta1 = new Cuenta("John", new BigDecimal("10000"));
+		Cuenta cuenta2 = new Cuenta("Saul", new BigDecimal("5000"));
+		Banco banco = new Banco();
+		banco.setNombre("Bancomer");
+		banco.transferir(cuenta1, cuenta2, new BigDecimal(monto));
+		assertTrue(cuenta2.getSaldo().compareTo(BigDecimal.ZERO)< 0 );
+
+	}
+	
+	@Test
+	@ParameterizedTest
+	@CsvSource({"1,200, Juan", "2.300, Carlos"})
+	void testTransferirParameterizedCsv(String monto, String saldo, String nombre) {
+		System.out.println("Nombre " + nombre + " Monto " + monto + "Saldo " + saldo);
 		Cuenta cuenta1 = new Cuenta("John", new BigDecimal("10000"));
 		Cuenta cuenta2 = new Cuenta("Saul", new BigDecimal("5000"));
 		Banco banco = new Banco();
