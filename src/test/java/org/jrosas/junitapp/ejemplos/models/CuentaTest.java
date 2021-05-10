@@ -3,6 +3,9 @@ package org.jrosas.junitapp.ejemplos.models;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -19,6 +22,8 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class CuentaTest {
@@ -181,7 +186,6 @@ class CuentaTest {
 	}
 	
 	
-	@Test
 	@ParameterizedTest
 	@ValueSource(strings = {"2000","3000","40000"})
 	void testTransferirParameterized(String monto) {
@@ -193,6 +197,37 @@ class CuentaTest {
 		assertTrue(cuenta2.getSaldo().compareTo(BigDecimal.ZERO)< 0 );
 
 	}
+	
+	@ParameterizedTest
+	@CsvSource({"1,2000","2,3000","3,40000"})
+	void testTransferirParameterizedCsv(String index ,String monto) {
+		Cuenta cuenta1 = new Cuenta("John", new BigDecimal("10000"));
+		Cuenta cuenta2 = new Cuenta("Saul", new BigDecimal("5000"));
+		Banco banco = new Banco();
+		banco.setNombre("Bancomer");
+		banco.transferir(cuenta1, cuenta2, new BigDecimal(monto));
+		assertTrue(cuenta2.getSaldo().compareTo(BigDecimal.ZERO)< 0 );
+
+	}
+	
+	@ParameterizedTest
+	@MethodSource("montoList")
+	void testTransferirParameterizedMethod(String monto) {
+		Cuenta cuenta1 = new Cuenta("John", new BigDecimal("10000"));
+		Cuenta cuenta2 = new Cuenta("Saul", new BigDecimal("5000"));
+		Banco banco = new Banco();
+		banco.setNombre("Bancomer");
+		banco.transferir(cuenta1, cuenta2, new BigDecimal(monto));
+		assertTrue(cuenta2.getSaldo().compareTo(BigDecimal.ZERO)< 0 );
+
+	}
+	
+	private static List <String> montoList(){
+		
+		
+		return Arrays.asList("200","400","600");
+	}
+	
 	
 
 }
