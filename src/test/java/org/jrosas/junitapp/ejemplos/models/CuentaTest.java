@@ -3,7 +3,6 @@ package org.jrosas.junitapp.ejemplos.models;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +15,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestReporter;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledForJreRange;
 import org.junit.jupiter.api.condition.EnabledOnJre;
@@ -218,7 +219,8 @@ class CuentaTest {
 	
 	@ParameterizedTest
 	@MethodSource("montoList")
-	void testTransferirParameterizedMethod(String monto) {
+	void testTransferirParameterizedMethod(String monto, TestInfo testInfo, TestReporter testReporter) {
+		System.out.println("TestInfo" + testInfo.getTestMethod().get().getName() );
 		Cuenta cuenta1 = new Cuenta("John", new BigDecimal("10000"));
 		Cuenta cuenta2 = new Cuenta("Saul", new BigDecimal("5000"));
 		Banco banco = new Banco();
@@ -233,6 +235,7 @@ class CuentaTest {
 		
 		return Arrays.asList("200","400","600");
 	}
+	
 	
 	
 
