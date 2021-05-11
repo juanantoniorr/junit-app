@@ -3,10 +3,12 @@ package org.jrosas.junitapp.ejemplos.models;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.*;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import org.jrosas.junitapp.ejemplos.exceptions.DineroInsuficienteException;
 import org.junit.jupiter.api.Disabled;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestReporter;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledForJreRange;
 import org.junit.jupiter.api.condition.EnabledOnJre;
@@ -235,6 +238,34 @@ class CuentaTest {
 		
 		return Arrays.asList("200","400","600");
 	}
+	
+	@Nested
+	@DisplayName("Probando timeout")
+	class EjemploTimeoutTest{
+		@Test 
+		@Timeout(5)
+		void pruebaTimeout() throws InterruptedException {
+			TimeUnit.SECONDS.sleep(6);
+			
+		}
+		
+		@Test 
+		@Timeout(value = 5, unit = TimeUnit.SECONDS)
+		void pruebaTimeout2() throws InterruptedException {
+			TimeUnit.SECONDS.sleep(4);
+			
+		}
+		
+		@Test 
+		void testTimeoutAssertion() throws InterruptedException {
+			assertTimeout(Duration.ofSeconds(5), () -> {
+				TimeUnit.MILLISECONDS.sleep(6);
+			});
+		}
+		
+		
+	}
+	
 	
 	
 	
